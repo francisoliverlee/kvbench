@@ -112,7 +112,7 @@ func (s *nutsdbStore) Keys(pattern []byte, limit int, withvals bool) ([][]byte, 
 	var vals [][]byte
 
 	err := s.db.View(func(tx *nutsdb.Tx) error {
-		entries, err := tx.PrefixScan(nutsdbBucket, pattern, nutsdb.ScanNoLimit)
+		entries, _, err := tx.PrefixScan(nutsdbBucket, pattern, 0, nutsdb.ScanNoLimit)
 
 		if err != nil {
 			return err

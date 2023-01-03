@@ -20,12 +20,13 @@ type btreeItem struct {
 	value []byte
 }
 
-func (a *btreeItem) Less(v btree.Item, ctx interface{}) bool {
-	return a.key < v.(*btreeItem).key
+func byKeys(a, b interface{}) bool {
+	i1, i2 := a.(*btreeItem), b.(*btreeItem)
+	return i1.key < i2.key
 }
 
 func NewBTreeStore(path string, fsync bool) (Store, error) {
-	tr := btree.New(32, nil)
+	tr := btree.New(byKeys)
 	var err error
 	var aof *AOF
 	if path == ":memory:" {
@@ -37,15 +38,14 @@ func NewBTreeStore(path string, fsync bool) (Store, error) {
 			switch strings.ToLower(string(args[0])) {
 			case "set":
 				if len(args) >= 3 {
-					tr.ReplaceOrInsert(
-						&btreeItem{string(args[1]), bcopy(args[2])})
+					tr.Set(&btreeItem{string(args[1]), bcopy(args[2])})
 				}
 			case "del":
 				if len(args) >= 2 {
 					tr.Delete(&btreeItem{string(args[1]), nil})
 				}
 			case "flushdb":
-				tr = btree.New(32, nil)
+				tr = btree.New(byKeys)
 			}
 			count++
 			return nil
@@ -86,7 +86,7 @@ func (s *btreeStore) PSet(keys, values [][]byte) error {
 		}
 	}
 	for i := range keys {
-		s.tr.ReplaceOrInsert(&btreeItem{string(keys[i]), bcopy(values[i])})
+		s.tr.Set(&btreeItem{string(keys[i]), bcopy(values[i])})
 	}
 	return nil
 }
@@ -117,7 +117,7 @@ func (s *btreeStore) Set(key, value []byte) error {
 			return err
 		}
 	}
-	s.tr.ReplaceOrInsert(&btreeItem{string(key), bcopy(value)})
+	s.tr.Set(&btreeItem{string(key), bcopy(value)})
 	return nil
 }
 
@@ -158,7 +158,7 @@ func (s *btreeStore) Keys(pattern []byte, limit int, withvalues bool) ([][]byte,
 	}
 	var keys [][]byte
 	var vals [][]byte
-	s.tr.AscendGreaterOrEqual(pivot, func(v btree.Item) bool {
+	s.tr.Ascend(pivot, func(v any) bool {
 		if limit > -1 && len(keys) >= limit {
 			return false
 		}
@@ -185,6 +185,6 @@ func (s *btreeStore) FlushDB() error {
 			return err
 		}
 	}
-	s.tr = btree.New(32, nil)
+	s.tr = btree.New(byKeys)
 	return nil
 }
