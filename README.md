@@ -20,7 +20,7 @@ Features:
   - [LevelDB](https://github.com/syndtr/goleveldb)
   - [cznic/kv](https://github.com/cznic/kv)
   - [rocksdb](https://github.com/tecbot/gorocksdb)
-  - [pebble](https://github.com/petermattis/pebble)
+  - [pebble](https://github.com/cockroachdb/pebble)
   - [pogreb](https://github.com/akrylysov/pogreb)
   - [nutsdb](https://github.com/xujiajun/nutsdb)
   - [sniper](https://github.com/recoilme/sniper)
