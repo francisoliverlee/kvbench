@@ -16,7 +16,7 @@ export LD_LIBRARY_PATH=/usr/local/lib
 echo "=========== test nofsync ==========="
 for i in "${STORES[@]}"
 do
-	./main -d 1m -size ${SIZE} -s "$i" >> benchmarks/test.log 2>&1
+	./main -d 10s -size ${SIZE} -s "$i" >> benchmarks/test.log 2>&1
 done
 
 `rm  -fr .*db`
