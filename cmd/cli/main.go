@@ -351,11 +351,11 @@ func getStore(s string, fsync bool, path string) (kvbench.Store, string, error) 
 			path = "buntdb.db"
 		}
 		store, err = kvbench.NewBuntdbStore(path, fsync)
-	case "rocksdb":
-		if path == "" {
-			path = "rocksdb.db"
-		}
-		store, err = kvbench.NewRocksdbStore(path, fsync)
+	//case "rocksdb":
+	//	if path == "" {
+	//		path = "rocksdb.db"
+	//	}
+	//	store, err = kvbench.NewRocksdbStore(path, fsync)
 	case "pebble":
 		if path == "" {
 			path = "pebble.db"
