@@ -1,0 +1,5 @@
+.idea
+cmd/cli/benchmarks/
+cmd/cli/cli
+cmd/cli/main
+kvbench

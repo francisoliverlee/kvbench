@@ -2,7 +2,7 @@
 
 SIZE=256
 
-STORES=("badger" "bbolt" "bolt" "leveldb" "kv" "buntdb" "pebble" "pogreb" "nutsdb" "rocksdb" "btree" "btree/memory" "map" "map/memory")
+STORES=("badger" "bbolt")
 
 export LD_LIBRARY_PATH=/usr/local/lib
 
